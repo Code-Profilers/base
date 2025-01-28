@@ -1,4 +1,4 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 setup(
@@ -10,7 +10,7 @@ setup(
     long_description=open('README.md').read(),
     description_content_type='text/markdown',
     long_description_content_type='text/markdown',
-    packages=[],
+    packages=find_packages(),
     install_requires=[],
     keywords=['python', 'profilers', 'profiler'],
     project_url='Code-Profilers, https://github.com/Code-Profilers/base',
