@@ -1,10 +1,9 @@
 from setuptools import setup
-from code_profilers import version
 
 
 setup(
     name='code_profilers',
-    version=version.__version__,
+    version='1.0.0',
     author='Hady Eslam',
     author_email='abdoaslam000@gmail.com',
     description='Code Profiler Package for profiling your code',
