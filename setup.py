@@ -3,7 +3,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='code_profilers',
-    version='1.0.1',
+    version='1.0.2',
     author='Hady Eslam',
     author_email='abdoaslam000@gmail.com',
     description=open('README.md').read(),
