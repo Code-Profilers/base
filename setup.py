@@ -8,6 +8,8 @@ setup(
     author_email='abdoaslam000@gmail.com',
     description=open('README.md').read(),
     long_description=open('README.md').read(),
+    description_content_type='text/markdown',
+    long_description_content_type='text/markdown',
     packages=[],
     install_requires=[],
     keywords=['python', 'profilers', 'profiler'],
