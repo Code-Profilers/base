@@ -38,6 +38,10 @@ Values: [True, False]
 Default: True
 
 
+## Formating
+You can install (Not required) `sql-formatter` and `pygments` to formate your sql for better readability
+
+
 ## How to use
 ```python
 from code_profilers.profilers.mysql.profiler import MySQLProfiler

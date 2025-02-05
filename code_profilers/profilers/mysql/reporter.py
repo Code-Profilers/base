@@ -125,6 +125,13 @@ class MySQLTerminalReporter:
             _query_sql: str = query_profile['sql']
 
         try:
+            from sql_formatter.core import format_sql
+
+            _query_sql = format_sql(_query_sql)
+        except:
+            pass
+
+        try:
             from pygments import highlight
             from pygments.lexers.sql import MySqlLexer
             from pygments.formatters import TerminalTrueColorFormatter
@@ -135,7 +142,7 @@ class MySQLTerminalReporter:
                 TerminalTrueColorFormatter(style=CustomStyle)
             )
 
-        except Exception as e:
+        except:
             pass
 
         filtered_lines = []
