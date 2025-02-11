@@ -37,7 +37,7 @@ try:
             Name.Tag:                  "bold #008000",
             Name.Decorator:            "#AA22FF",
 
-            String:                    "#BA2121",
+            String:                    "#D2665A",
             String.Doc:                "italic",
             String.Interpol:           "bold #A45A77",
             String.Escape:             "bold #AA5D1F",
@@ -87,16 +87,12 @@ class PostgreSQLTerminalReporter:
         print(f"{' ' * sql_name_spaces}| SQL:")
 
         ####### Filter Query From Spaces
-        filtered_lines = self.__prepare_query(query_profile, kwargs.get('is_combined_query'))
+        _query_str = self.__prepare_query(query_profile, kwargs.get('is_combined_query'))
 
         ####### Report Query SQL
-        query_space = 2
-        for line in filtered_lines:
-            print()
-            print(line)
-            print()
-            # print(f"{' ' * sql_name_spaces}|{' ' * query_space}|")
-            # print(f"{' ' * sql_name_spaces}|{' ' * query_space}| {line}")
+        print()
+        print(_query_str)
+        print()
 
         ####### Report Number Of Duplication
         self.__report_duplication_number(query_profile, kwargs.get('is_combined_query'))
@@ -125,35 +121,32 @@ class PostgreSQLTerminalReporter:
             _query_sql: str = query_profile['sql']
 
         try:
-            from sql_formatter.core import format_sql
-
-            _query_sql = format_sql(_query_sql)
-        except:
-            pass
-
-        try:
             from pygments import highlight
             from pygments.lexers.sql import PostgresLexer
             from pygments.formatters import TerminalTrueColorFormatter
 
+            import sqlparse
+
             _query_sql = highlight(
-                _query_sql,
-                PostgresLexer(stripnl=True),
+                sqlparse.format(
+                    _query_sql,
+                    keyword_case='upper',
+                    reindent=True,
+                    reindent_aligned=True,
+                    use_space_around_operators=True,
+                ),
+                PostgresLexer(stripnl=False),
                 TerminalTrueColorFormatter(style=CustomStyle)
             )
-
-        except Exception as e:
+        except:
             pass
 
-        filtered_lines = []
-        start_capture = False
+        _lines = []
         for line in _query_sql.splitlines():
             if line.strip() != '':
-                start_capture = True
-            if start_capture:
-                filtered_lines.append(line)
+                _lines.append(line)
 
-        return filtered_lines
+        return '\n'.join(_lines)
 
     def __report_duplication_number(self, query_profile, is_combined_query):
         _spaces = 4
@@ -163,12 +156,10 @@ class PostgreSQLTerminalReporter:
             duplication_number = len(query_profile)
 
         print(f"{' ' * _spaces}|")
-        print(f"{' ' * _spaces}|")
         print(f"{' ' * _spaces}| Duplication Number: {duplication_number}")
 
     def __report_broken_queries(self, query_profile, is_combined_query):
         _spaces = 4
-        print(f"{' ' * _spaces}|")
         print(f"{' ' * _spaces}|")
 
         if not is_combined_query:
@@ -184,21 +175,19 @@ class PostgreSQLTerminalReporter:
     def __report_time_span(self, query_profile: dict|list, is_combined_query):
         timespan_spaces = 4
         print(f"{' ' * timespan_spaces}|")
-        print(f"{' ' * timespan_spaces}|")
         if not is_combined_query:
             if query_profile.get('timespan'):
-                print(f"{' ' * timespan_spaces}| Time Span: {query_profile['timespan']['diff'] * 1000} ms")
+                print(f"{' ' * timespan_spaces}| Time Span: {round(query_profile['timespan']['diff'] * 1000, 2)} ms")
         else:
             print(f"{' ' * timespan_spaces}| Time Spans:")
             for index, _query in enumerate(query_profile):
                 if _query.get('timespan'):
                     print(
                         f"{' ' * timespan_spaces}|"
-                        f"{' ' * 3}Query {index + 1} Time Span. {_query['timespan']['diff'] * 1000} ms")
+                        f"{' ' * 3}Query {index + 1} Time Span. {round(_query['timespan']['diff'] * 1000, 2)} ms")
 
     def __report_param(self, query_profile: dict|list, is_combined_query):
         params_spaces = 4
-        print(f"{' ' * params_spaces}|")
         print(f"{' ' * params_spaces}|")
         print(f"{' ' * params_spaces}| Params:")
 
@@ -245,5 +234,5 @@ class PostgreSQLTerminalReporter:
         print('    ______')
         print('    |')
         print('    | Queries Count     | -> ' + str(queries_count))
-        print('    | Max Query Time    | -> ' + str(max_query_time) + ' ms')
+        print('    | Max Query Time    | -> ' + str(round(max_query_time, 2)) + ' ms')
         print('    |')
