@@ -52,6 +52,7 @@ mysql_profiler = MySQLProfiler(
     combine_duplicated_queries=True
 )
 
+mysql_profiler.patch()
 mysql_profiler.start()
 
 ###

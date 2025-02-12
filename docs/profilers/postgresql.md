@@ -52,6 +52,7 @@ postgresql_profiler = PostgreSQLProfiler(
     combine_duplicated_queries=True
 )
 
+postgresql_profiler.patch()
 postgresql_profiler.start()
 
 ###

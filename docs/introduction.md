@@ -42,6 +42,7 @@ You can also use it with specific lines of code not just flask
 from code_profilers.profilers.postgresql.profiler import PostgreSQLProfiler
 
 postgresql_profiler = PostgreSQLProfiler()
+postgresql_profiler.patch()
 postgresql_profiler.start()
 
 ###
@@ -64,3 +65,4 @@ You can see the docs in `docs` folder.
 * Integrations:
     * [Flask Integration](integrations/flask.md)
     * [Django Integration](integrations/django.md)
+* [Decorators](decorators.md)
