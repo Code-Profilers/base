@@ -16,6 +16,7 @@ jobs:
       - name: Install Requirements
         run: |
           python3 -m pip install --upgrade pip
+          python3 -m pip install --upgrade build
           python3 -m pip install setuptools wheel
           python3 -m pip install --upgrade twine
 
