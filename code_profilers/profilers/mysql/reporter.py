@@ -219,10 +219,11 @@ class MySQLTerminalReporter:
         max_query_time = 0
 
         if is_combined_query:
-            for index, query in queries.items():
-                queries_count += len(query)
-                if query['timespan']['diff'] * 1000 > max_query_time:
-                    max_query_time = query['timespan']['diff'] * 1000
+            for index, queries in queries.items():
+                queries_count += len(queries)
+                for query in queries:
+                    if query['timespan']['diff'] * 1000 > max_query_time:
+                        max_query_time = query['timespan']['diff'] * 1000
         else:
             queries_count = len(queries)
             for query in queries:
